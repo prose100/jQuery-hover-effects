@@ -70,6 +70,39 @@
 		)
 	}
 
+	HoverEffect.prototype.slideUp = function(overlay, height, width) {
+		
+		var _this = this;
+
+		$(this.element).hover(function() {	
+			overlay.stop()
+				.css({
+					top: height,
+					width: width,
+					opacity: _this.config.opacity,
+					display: "block"
+				})
+				.animate({
+					top: 0,
+					height: height,
+				}, _this.config.duration)}, function() {	
+			overlay.stop()
+				.animate({
+					height: "0px",
+					top: height,					
+				}, _this.config.duration, function(){
+				overlay
+					.css({
+						width: "0px",
+						opacity: 0,
+						display: "none"
+					})
+				})	
+			}
+		)
+	}
+	
+
 	$.fn.hovereffect = function(options) {
 		return this.each(function() {
 			new HoverEffect(this, options);
