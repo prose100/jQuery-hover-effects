@@ -23,6 +23,7 @@
 			})
 
 		var overlay = $('<div>').addClass(this.config.overlayClass).appendTo(this.element);
+		var link = $(this.element).children(":nth-child(2)").appendTo(overlay);
 
 		overlay
 			.css({
@@ -33,6 +34,13 @@
 				"opacity": 0,
 				"height": "0px",
 				"width": "0px"
+			})
+
+		link
+			.css({
+				"position": "absolute",
+				"top": "35%",
+				"left": "35%"
 			})
 
 		var height = $(this.element).children(":first").attr("height");
