@@ -17,7 +17,7 @@
   <body>
 
   <div class="myhovereffect">
-   
+    <img width="100px" height="100px" src="web_page.png" alt="web page">
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -25,9 +25,11 @@
   <script>
     $(function() {
         $(".myhovereffect").hovereffect({
-          overlayClass: "overlay"
+          overlayClass: "overlay",
+          duration: 500,
+          opacity: 0.5,
+          animation: "slideDown"
         });
-
     });
   </script>
 

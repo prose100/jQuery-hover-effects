@@ -1,8 +1,10 @@
 ;(function($){
 
-
 	var defaults = {
-		overlayClass: "overlay"
+		overlayClass: "overlay",
+		duration: 500,
+		opacity: "0.5",
+		animation: "slideDown"	
 	};
 
 	function HoverEffect(element, options) {
@@ -32,8 +34,41 @@
 				"height": "0px",
 				"width": "0px"
 			})
-		};
 
+		var height = $(this.element).children(":first").attr("height");
+		var width = $(this.element).children(":first").attr("width");
+
+		this[this.config.animation](overlay, height, width);
+	};
+
+	HoverEffect.prototype.slideDown = function(overlay, height, width) {
+		
+		var _this = this;
+
+		$(this.element).hover(function() {	
+			overlay.stop()
+				.css({
+					width: width,
+					opacity: _this.config.opacity,
+					display: "block"
+				})
+				.animate({
+					height: height
+				}, _this.config.duration)}, function() {	
+			overlay.stop()
+				.animate({
+					height: "0px"
+				}, _this.config.duration, function(){
+				overlay
+					.css({
+						width: "0px",
+						opacity: 0,
+						display: "none"
+					})
+				})	
+			}
+		)
+	}
 
 	$.fn.hovereffect = function(options) {
 		return this.each(function() {
