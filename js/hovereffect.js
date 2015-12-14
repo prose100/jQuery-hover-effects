@@ -4,7 +4,7 @@
 		overlayClass: "overlay",
 		duration: 500,
 		opacity: "0.5",
-		animation: "slideDown"	
+		animation: "slideRight"	
 	};
 
 	function HoverEffect(element, options) {
@@ -101,7 +101,36 @@
 			}
 		)
 	}
-	
+
+	HoverEffect.prototype.slideRight = function(overlay, height, width) {
+		
+		var _this = this;
+
+		$(this.element).hover(function() {	
+			overlay.stop()
+				.css({
+					height: height,
+					opacity: _this.config.opacity,
+					display: "block"
+				})
+				.animate({
+					width: width
+				}, _this.config.duration)}, function() {	
+			overlay.stop()
+				.animate({
+					width: "0px"
+				}, _this.config.duration, function(){
+				overlay
+					.css({
+						height: "0px",
+						opacity: 0,
+						display: "none"
+					})
+				})	
+			}
+		)
+	}
+
 
 	$.fn.hovereffect = function(options) {
 		return this.each(function() {
