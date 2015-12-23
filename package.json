@@ -19,6 +19,5 @@
     "grunt-open": "0.2.3",
     "load-grunt-tasks": "0.6.0"
   },
-  "author": "Anthony Del Ciotto",
-  "license": "MIT"
+  "author": "Paul Rose"
 }
