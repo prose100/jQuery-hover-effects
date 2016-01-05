@@ -241,6 +241,41 @@
 		)
 	}
 
+	HoverEffect.prototype.slideDiagonalUpLeft = function(overlay, height, width) {
+		
+		var _this = this;
+
+		$(this.element).hover(function() {	
+			overlay.stop()
+				.css({
+					left: width,
+					top: height,
+					opacity: _this.config.opacity,
+					display: "block"
+				})
+				.animate({
+					left: 0,
+					top: 0,
+					height: height,
+					width: width
+				}, _this.config.duration)}, function() {	
+			overlay.stop()
+				.animate({
+					left: width,
+					top: height,
+					height: "0px",
+					width: "0px"
+				}, _this.config.duration, function(){
+				overlay
+					.css({
+						opacity: 0,
+						display: "none"
+					})
+				})	
+			}
+		)
+	}
+
 	HoverEffect.prototype.fadeInAndOut = function(overlay, height, width) {
 		
 		var _this = this;
