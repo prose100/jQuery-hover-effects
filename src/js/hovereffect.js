@@ -171,6 +171,35 @@
 		)
 	}
 
+	HoverEffect.prototype.fadeInAndOut = function(overlay, height, width) {
+		
+		var _this = this;
+
+		$(this.element).hover(function() {	
+			overlay.stop()
+				.css({
+					width: width,
+					height: height,
+					display: "block"
+				})
+				.animate({
+					opacity: _this.config.opacity
+				}, _this.config.duration)}, function() {	
+			overlay.stop()
+				.animate({
+					opacity: 0
+				}, _this.config.duration, function(){
+				overlay
+					.css({
+						width: "0px",
+						height: "0px",
+						display: "none"
+					})
+				})	
+			}
+		)
+	}
+
 
 	$.fn.hovereffect = function(options) {
 		return this.each(function() {
