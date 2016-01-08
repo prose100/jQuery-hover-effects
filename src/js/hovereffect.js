@@ -2,345 +2,143 @@
 
 	var defaults = {
 		overlayClass: "overlay",
+		background_color: "#000",
 		duration: 500,
 		opacity: "0.5",
-		animation: "slideLeft"	
+		path: ['left', 'topRight'],
+		wrapper_class: 'wrapper',
+		hover_class: 'hover',
+		base_class: 'base',
+		width: "300px",
+		height: "300px",
+		zindex: 2,
+		onshow: function(){}	
 	};
 
 	function HoverEffect(element, options) {
 		
-		this.config = $.extend({}, defaults, options);
-		this.element = element;
+		settings = $.extend({}, defaults, options);
+		$this = $(element);
+
 		this.init();
 	}
 
 	HoverEffect.prototype.init = function() {
+
+		var dimensions = this.getDimensions();
 		
-		$(this.element)
-			.css({
-				"position": "relative",
-				"display": "inline-block"
-			})
+		var divs = this.createDivs(dimensions);
+	
+		this.setProperties(divs);
 
-		var overlay = $('<div>').addClass(this.config.overlayClass).appendTo(this.element);
-		var link = $(this.element).children(":nth-child(2)").appendTo(overlay);
+		var nodes = this.getNodes(dimensions);
 
-		overlay
-			.css({
-				"position": "absolute",
-				"left": 0,
-				"top": 0,
-				"display": "none",
-				"opacity": 0,
-				"height": "0px",
-				"width": "0px"
-			})
+		this.goToStart(nodes, divs);
 
-		link
-			.css({
-				"position": "absolute",
-				"top": "35%",
-				"left": "35%"
-			})
-
-		var height = $(this.element).children(":first").attr("height");
-		var width = $(this.element).children(":first").attr("width");
-
-		this[this.config.animation](overlay, height, width);
+		this.animate(nodes, divs);
 	};
 
-	HoverEffect.prototype.slideDown = function(overlay, height, width) {
-		
-		var _this = this;
+	HoverEffect.prototype.getDimensions = function() {
+		var width = $this.width() ?  $this.width(): settings.width;
+		var height = $this.height() ? $this.height() : settings.height;
 
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					width: width,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					height: height
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					height: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						width: "0px",
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
+		return dimensions = {
+					width : width,
+					height : height
+				}
 	}
 
-	HoverEffect.prototype.slideUp = function(overlay, height, width) {
+	HoverEffect.prototype.createDivs = function(dimensions) {
+
+		var $info = $this.next();
+		$info.hide();
+
+		var $wrapper = $('<div>').addClass('wrapper').addClass(settings.wrapper_class).css({ 'width':dimensions.width, 'height':dimensions.height, 'position':'relative', 'overflow':'hidden' }).insertAfter($this);
 		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					top: height,
-					width: width,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					top: 0,
-					height: height,
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					height: "0px",
-					top: height,					
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						width: "0px",
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.slideRight = function(overlay, height, width) {
+		var $base = $('<div>').addClass(settings.base_class).css({ 'width':dimensions.width, 'height':dimensions.height, 'position':'absolute', 'z-index':settings.zindex }).appendTo($wrapper);
+		$this.clone().appendTo($wrapper);
+		$this.hide();
 		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					height: height,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					width: width
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					width: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						height: "0px",
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.slideLeft = function(overlay, height, width) {
+		var $hover = $('<div>').addClass(settings.hover_class).css({ 'width':dimensions.width, 'height':dimensions.height, 'position':'absolute', 'z-index':settings.zindex-1 }).appendTo($wrapper);
+		$info.clone().show().appendTo($hover);
 		
-		var _this = this;
+		var divs = {
+			wrapper : $wrapper,
+			base    : $base,
+			hover   : $hover
+		}
 
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					left: width,
-					height: height,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					left: 0,
-					width: width
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					left: width,
-					width: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						height: "0px",
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.slideDiagonalDownLeft = function(overlay, height, width) {
-		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					left: width,
-					top: 0,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					left: 0,
-					top: 0,
-					height: height,
-					width: width
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					left: width,
-					top: 0,
-					height: "0px",
-					width: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.slideDiagonalDownRight = function(overlay, height, width) {
-		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					right: width,
-					top: 0,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					left: 0,
-					top: 0,
-					height: height,
-					width: width
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					right: width,
-					top: 0,
-					height: "0px",
-					width: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.slideDiagonalUpLeft = function(overlay, height, width) {
-		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					left: width,
-					top: height,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					left: 0,
-					top: 0,
-					height: height,
-					width: width
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					left: width,
-					top: height,
-					height: "0px",
-					width: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.slideDiagonalUpRight = function(overlay, height, width) {
-		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					right: width,
-					top: height,
-					opacity: _this.config.opacity,
-					display: "block"
-				})
-				.animate({
-					right: 0,
-					top: 0,
-					height: height,
-					width: width
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					right: width,
-					top: height,
-					height: "0px",
-					width: "0px"
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						opacity: 0,
-						display: "none"
-					})
-				})	
-			}
-		)
-	}
-
-	HoverEffect.prototype.fadeInAndOut = function(overlay, height, width) {
-		
-		var _this = this;
-
-		$(this.element).hover(function() {	
-			overlay.stop()
-				.css({
-					width: width,
-					height: height,
-					display: "block"
-				})
-				.animate({
-					opacity: _this.config.opacity
-				}, _this.config.duration)}, function() {	
-			overlay.stop()
-				.animate({
-					opacity: 0
-				}, _this.config.duration, function(){
-				overlay
-					.css({
-						width: "0px",
-						height: "0px",
-						display: "none"
-					})
-				})	
-			}
-		)
+		return divs
 	}
 
 
+	HoverEffect.prototype.setProperties = function(divs) {
+		if (settings.opacity<1) { 
+			divs.hover.css({'opacity': settings.opacity}); 
+			}
+		if (settings.background_color) { 
+			divs.hover.css({'background-color': settings.background_color}); 
+			}
+	}
+
+	HoverEffect.prototype.getNodes = function(dimensions) {
+		var nodes = {
+			begin : this.getCoordinates(settings.path[0], dimensions),
+			end   : this.getCoordinates(settings.path[1], dimensions),
+			base  : {top:0, left:0}
+		}
+		return nodes
+	}
+
+	
+	HoverEffect.prototype.getCoordinates = function(position, dimensions) {
+		console.log(position)
+		switch (position) {
+			case 'left':
+				return {top:0, left:-dimensions.width};
+			case 'right':
+				return {top:0, left:dimensions.width};
+			case 'top':
+				return {top:-dimensions.height, left:0};
+			case 'bottom':
+				return {top:dimensions.height, left:0};
+			case 'topLeft':
+				return {top:-dimensions.height, left:-dimensions.width};
+			case 'topRight':
+				return {top:-dimensions.height, left:dimensions.width};
+			case 'bottomLeft':
+				return {top:dimensions.height, left:-dimensions.width};
+			case 'bottomRight':
+				return {top:dimensions.height, left:dimensions.width};
+		}
+	}
+
+	HoverEffect.prototype.goToStart = function(nodes, divs) {
+
+		divs.hover.css({'z-index':settings.zindex-1, 'display':'none'})
+			 .animate(nodes.begin, 0,
+				function() {
+			  		divs.hover.css({'display':'block'})
+			  	}
+			);
+	}
+	
+	HoverEffect.prototype.animate = function(nodes, divs) {
+
+		var _this = this;
+
+		divs.wrapper.hover(function() {
+			divs.hover.stop().css({'z-index':settings.zindex+1}).animate(nodes.base, settings.duration, settings.onshow());
+			}, function() {	
+				divs.hover.stop().animate(nodes.end, settings.duration,
+					function() {
+						_this.goToStart(nodes, divs);
+					}
+				)
+			}		 
+		)
+	}	
+	
 	$.fn.hovereffect = function(options) {
 		return this.each(function() {
 			new HoverEffect(this, options);

@@ -7,29 +7,25 @@
     <title></title>
 
     <link rel="stylesheet" type="text/css" href="css/hovereffect.css">
-
-
       <!--[if lt IE 9]>
         <script src="http://html5shiv-printshiv.googlecode.com/svn/trunk/html5shiv-printshiv.js"></script>
       <![endif]-->
-        
   </head>
   <body>
 
-  <div class="myhovereffect">
-    <img width="100px" height="100px" src="img/web_page.png" alt="web page">
-    <a href=""><img width="25px" height="25px" src="img/link-green.png" alt="link"></a>
-  </div>
+ 
+    <img class="content" src="img/web_page.png" alt="web page">
+    <div class="overlay" style="display: none" >hello</div>
+ 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="js/hovereffect.js"></script>
   <script>
     $(function() {
-        $(".myhovereffect").hovereffect({
-          overlayClass: "overlay",
+        $(".content").hovereffect({
           duration: 500,
           opacity: 0.5,
-          animation: "slideDiagonalUpRight"
+          path: ['left', 'bottomRight']
         });
     });
   </script>
