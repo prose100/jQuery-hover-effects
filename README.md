@@ -17,20 +17,20 @@ The jQuery-Hover-Effects Plugin provides a way to place overlays on to images.
 Include jQuery and the plugin on a page.  Call the function as shown.
 
 ```html
-<div class="myhovereffect">
-    <img width="100px" height="100px" src="img/web_page.png" alt="web page">
-    <a href=""><img width="25px" height="25px" src="img/link-green.png" alt="link"></a>
- </div>
+<img class="content" src="img/web_page.png" alt="web page">
+<div class="overlay" style="display: none">Content For Overlay Goes Here!</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="hovereffect.js"></script>
+
 <script>
-$(function() {
-    $(".myhovereffect").hovereffect({
-      overlayClass: "overlay",
-      duration: 500,
-      opacity: 0.5,
-      animation: "slideLeft"
+	$(function() {
+       	$(".content").hovereffect({
+          background_color: "#777",
+          duration: 500,
+          opacity: 0.7,
+          path: ['left', 'bottomRight']
+        });
     });
-});
 </script>
 ```
