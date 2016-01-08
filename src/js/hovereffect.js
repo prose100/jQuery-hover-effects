@@ -71,7 +71,6 @@
 		return divs
 	}
 
-
 	HoverEffect.prototype.setProperties = function(divs) {
 		if (settings.opacity<1) { 
 			divs.hover.css({'opacity': settings.opacity}); 
@@ -90,7 +89,6 @@
 		return nodes
 	}
 
-	
 	HoverEffect.prototype.getCoordinates = function(position, dimensions) {
 		console.log(position)
 		switch (position) {
