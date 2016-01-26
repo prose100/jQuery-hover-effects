@@ -9,8 +9,10 @@
 		wrapper_class: 'wrapper',
 		hover_class: 'hover',
 		base_class: 'base',
-		width: "300px",
-		height: "300px",
+		contentWidth: "0px",
+		contentHeight: "0px",
+		overlayWidth: "0px",
+		overlayHeight: "0px",
 		zindex: 2,
 		onshow: function(){}	
 	};
@@ -26,25 +28,34 @@
 	HoverEffect.prototype.init = function() {
 
 		var dimensions = this.getDimensions();
-		
+		$this.css({'width':dimensions.cWidth, 'height':dimensions.cHeight});
+
 		var divs = this.createDivs(dimensions);
-	
-		this.setProperties(divs);
-
+		this.setProperties(divs, dimensions);
 		var nodes = this.getNodes(dimensions);
-
+	
+		this.setProperties(divs, dimensions);
+		
 		this.goToStart(nodes, divs);
-
 		this.animate(nodes, divs);
 	};
 
 	HoverEffect.prototype.getDimensions = function() {
-		var width = $this.width() ?  $this.width(): settings.width;
-		var height = $this.height() ? $this.height() : settings.height;
+		var contentWidth = parseInt(settings.contentWidth, 10);
+		var contentHeight = parseInt(settings.contentHeight, 10);
+		var overlayWidth = parseInt(settings.overlayWidth, 10);
+		var overlayHeight = parseInt(settings.overlayHeight, 10);
+
+		contentWidth = contentWidth > 0 ? contentWidth : $this.width();
+		contentHeight = contentHeight > 0 ? contentHeight : $this.height();
+		overlayWidth = overlayWidth > 0 ? overlayWidth : contentWidth;
+		overlayHeight = overlayHeight > 0 ? overlayHeight : contentHeight;
 
 		return dimensions = {
-					width : width,
-					height : height
+					cWidth : contentWidth,
+					cHeight : contentHeight,
+					oWidth : overlayWidth,
+					oHeight : overlayHeight
 				}
 	}
 
@@ -53,13 +64,21 @@
 		var $info = $this.next();
 		$info.hide();
 
-		var $wrapper = $('<div>').addClass('wrapper').addClass(settings.wrapper_class).css({ 'width':dimensions.width, 'height':dimensions.height, 'position':'relative', 'overflow':'hidden' }).insertAfter($this);
+		var $wrapper = $('<div>').addClass('wrapper').addClass(settings.wrapper_class)
+			.css({ 'width':dimensions.cWidth, 'height':dimensions.cHeight, 'position':'relative', 'overflow':'hidden' })
+			.insertAfter($this);
 		
-		var $base = $('<div>').addClass(settings.base_class).css({ 'width':dimensions.width, 'height':dimensions.height, 'position':'absolute', 'z-index':settings.zindex }).appendTo($wrapper);
+		var $base = $('<div>').addClass(settings.base_class)
+			.css({ 'width':dimensions.cWidth, 'height':dimensions.cHeight, 'position':'absolute', 'z-index':settings.zindex })
+			.appendTo($wrapper);
+
 		$this.clone().appendTo($wrapper);
 		$this.hide();
 		
-		var $hover = $('<div>').addClass(settings.hover_class).css({ 'width':dimensions.width, 'height':dimensions.height, 'position':'absolute', 'z-index':settings.zindex-1 }).appendTo($wrapper);
+		var $hover = $('<div>').addClass(settings.hover_class)
+			.css({'width':dimensions.oWidth, 'height':dimensions.oHeight, 'position':'absolute', 'z-index':settings.zindex-1 })
+			.appendTo($wrapper);
+
 		$info.clone().show().appendTo($hover);
 		
 		var divs = {
@@ -71,7 +90,8 @@
 		return divs
 	}
 
-	HoverEffect.prototype.setProperties = function(divs) {
+	HoverEffect.prototype.setProperties = function(divs, dimensions) {
+		
 		if (settings.opacity<1) { 
 			divs.hover.css({'opacity': settings.opacity}); 
 			}
@@ -93,21 +113,21 @@
 		console.log(position)
 		switch (position) {
 			case 'left':
-				return {top:0, left:-dimensions.width};
+				return {top:0, left:-dimensions.cWidth};
 			case 'right':
-				return {top:0, left:dimensions.width};
+				return {top:0, left:dimensions.cWidth};
 			case 'top':
-				return {top:-dimensions.height, left:0};
+				return {top:-dimensions.cHeight, left:0};
 			case 'bottom':
-				return {top:dimensions.height, left:0};
+				return {top:dimensions.cHeight, left:0};
 			case 'topLeft':
-				return {top:-dimensions.height, left:-dimensions.width};
+				return {top:-dimensions.cHeight, left:-dimensions.cWidth};
 			case 'topRight':
-				return {top:-dimensions.height, left:dimensions.width};
+				return {top:-dimensions.cHeight, left:dimensions.cWidth};
 			case 'bottomLeft':
-				return {top:dimensions.height, left:-dimensions.width};
+				return {top:dimensions.cHeight, left:-dimensions.cWidth};
 			case 'bottomRight':
-				return {top:dimensions.height, left:dimensions.width};
+				return {top:dimensions.cHeight, left:dimensions.cWidth};
 		}
 	}
 

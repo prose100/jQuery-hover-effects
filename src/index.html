@@ -14,7 +14,7 @@
   <body>
 
     <img class="content" src="img/web_page.png" alt="web page">
-    <div class="overlay" style="display: none">Content For Overlay Goes Here!</div>
+    <div class="overlay" style="display:none">Content For Overlay Goes Here!</div>
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="js/hovereffect.js"></script>
@@ -24,7 +24,11 @@
           background_color: "#777",
           duration: 500,
           opacity: 0.7,
-          path: ['left', 'bottomRight']
+          path: ['left', 'bottomRight'],
+          contentWidth: "300px",
+          contentHeight: "300px",          
+          overlayWidth: "0px",
+          overlayHeight: "0px"
         });
     });
   </script>
