@@ -1,8 +1,8 @@
 ;(function($){
 
 	var defaults = {
-		overlayClass: "overlay",
 		background_color: "#000",
+		font_color: "#fff",
 		duration: 500,
 		opacity: "0.5",
 		slidePath: ['', ''],
@@ -101,6 +101,10 @@
 			}
 		if (settings.background_color) { 
 			divs.hover.css({'background-color': settings.background_color}); 
+			}
+
+		if (settings.font_color) { 
+			divs.hover.css({'color': settings.font_color}); 
 			}
 	}
 
