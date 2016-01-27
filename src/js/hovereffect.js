@@ -104,22 +104,21 @@
 		var nodes = {
 			begin : this.getCoordinates(settings.path[0], dimensions),
 			end   : this.getCoordinates(settings.path[1], dimensions),
-			base  : {top:0, left:0}
+			base  : this.getCoordinates('base', dimensions)
 		}
 		return nodes
 	}
 
 	HoverEffect.prototype.getCoordinates = function(position, dimensions) {
-		console.log(position)
 		switch (position) {
 			case 'left':
-				return {top:0, left:-dimensions.cWidth};
+				return {top:this.locateOverlay(dimensions, 'height'), left:-dimensions.cWidth};
 			case 'right':
-				return {top:0, left:dimensions.cWidth};
+				return {top:this.locateOverlay(dimensions, 'height'), left:(dimensions.cWidth)};
 			case 'top':
-				return {top:-dimensions.cHeight, left:0};
+				return {top:-dimensions.cHeight, left:this.locateOverlay(dimensions, 'width')};
 			case 'bottom':
-				return {top:dimensions.cHeight, left:0};
+				return {top:dimensions.cHeight, left:this.locateOverlay(dimensions, 'width')};
 			case 'topLeft':
 				return {top:-dimensions.cHeight, left:-dimensions.cWidth};
 			case 'topRight':
@@ -128,7 +127,25 @@
 				return {top:dimensions.cHeight, left:-dimensions.cWidth};
 			case 'bottomRight':
 				return {top:dimensions.cHeight, left:dimensions.cWidth};
+			case 'base':
+				if ((settings.path[0]) == 'left') {
+					return {top:this.locateOverlay(dimensions, 'height'), left:0};
+				} else if ((settings.path[0]) == 'right') {
+					return {top:this.locateOverlay(dimensions, 'height'), left:dimensions.cWidth-dimensions.oWidth};
+				} else if ((settings.path[0]) == 'top') {
+					return {top:0, left:console.log(this.locateOverlay(dimensions, 'width'))};
+				} else if ((settings.path[0]) == 'bottom') {
+					return {top:dimensions.cHeight-dimensions.oHeight, left:console.log(this.locateOverlay(dimensions, 'width'))};
+				}
 		}
+	}
+
+	HoverEffect.prototype.locateOverlay = function(dimensions, direction) {
+		console.log(dimensions.oWidth)
+		var locationOverlay = direction == 'height' ? (dimensions.cHeight - dimensions.oHeight)/2 : 
+							   (dimensions.cWidth - dimensions.oWidth)/2;
+							   console.log(locationOverlay)
+		return locationOverlay;
 	}
 
 	HoverEffect.prototype.goToStart = function(nodes, divs) {
