@@ -5,7 +5,7 @@
 		background_color: "#000",
 		duration: 500,
 		opacity: "0.5",
-		path: ['left', 'topRight'],
+		slidePath: ['', ''],
 		wrapper_class: 'wrapper',
 		hover_class: 'hover',
 		base_class: 'base',
@@ -32,12 +32,16 @@
 
 		var divs = this.createDivs(dimensions);
 		this.setProperties(divs, dimensions);
-		var nodes = this.getNodes(dimensions);
-	
-		this.setProperties(divs, dimensions);
-		
-		this.goToStart(nodes, divs);
-		this.animate(nodes, divs);
+
+		if (settings.slidePath[0]=='') {
+			divs.hover.css(this.getCoordinates('zero', dimensions));
+			divs.hover.css({'display':'none'});
+			this.fade(divs);
+		} else {
+			var nodes = this.getNodes(dimensions);
+			this.goToStart(nodes, divs);
+			this.animate(nodes, divs);
+		}
 	};
 
 	HoverEffect.prototype.getDimensions = function() {
@@ -102,8 +106,8 @@
 
 	HoverEffect.prototype.getNodes = function(dimensions) {
 		var nodes = {
-			begin : this.getCoordinates(settings.path[0], dimensions),
-			end   : this.getCoordinates(settings.path[1], dimensions),
+			begin : this.getCoordinates(settings.slidePath[0], dimensions),
+			end   : this.getCoordinates(settings.slidePath[1], dimensions),
 			base  : this.getCoordinates('base', dimensions)
 		}
 		return nodes
@@ -128,24 +132,33 @@
 			case 'bottomRight':
 				return {top:dimensions.cHeight, left:dimensions.cWidth};
 			case 'base':
-				if ((settings.path[0]) == 'left') {
+				if ((settings.slidePath[0]) == 'left') {
 					return {top:this.locateOverlay(dimensions, 'height'), left:0};
-				} else if ((settings.path[0]) == 'right') {
+				} else if ((settings.slidePath[0]) == 'right') {
 					return {top:this.locateOverlay(dimensions, 'height'), left:dimensions.cWidth-dimensions.oWidth};
-				} else if ((settings.path[0]) == 'top') {
+				} else if ((settings.slidePath[0]) == 'top') {
 					return {top:0, left:console.log(this.locateOverlay(dimensions, 'width'))};
-				} else if ((settings.path[0]) == 'bottom') {
-					return {top:dimensions.cHeight-dimensions.oHeight, left:console.log(this.locateOverlay(dimensions, 'width'))};
+				} else if ((settings.slidePath[0]) == 'bottom') {
+					return {top:dimensions.cHeight-dimensions.oHeight, left:this.locateOverlay(dimensions, 'width')};
 				}
+			case 'zero':
+				return {top:0, left:0};
 		}
 	}
 
 	HoverEffect.prototype.locateOverlay = function(dimensions, direction) {
-		console.log(dimensions.oWidth)
 		var locationOverlay = direction == 'height' ? (dimensions.cHeight - dimensions.oHeight)/2 : 
 							   (dimensions.cWidth - dimensions.oWidth)/2;
-							   console.log(locationOverlay)
 		return locationOverlay;
+	}
+
+	HoverEffect.prototype.fade = function(divs) {
+		divs.wrapper.hover(function() {
+			divs.hover.stop().fadeIn(settings.duration, settings.onshow());
+			}, function() {	
+				divs.hover.stop().fadeOut(settings.duration)
+			}
+		);		
 	}
 
 	HoverEffect.prototype.goToStart = function(nodes, divs) {
