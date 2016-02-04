@@ -4,7 +4,7 @@
 		background_color: "#000",
 		font_color: "#fff",
 		duration: 500,
-		opacity: "0.5",
+		opacity: 0.5,
 		slidePath: ['', ''],
 		wrapper_class: 'wrapper',
 		hover_class: 'hover',
@@ -13,8 +13,7 @@
 		contentHeight: "0px",
 		overlayWidth: "0px",
 		overlayHeight: "0px",
-		zindex: 2,
-		onshow: function(){}	
+		zindex: 2
 	};
 
 	function HoverEffect(element, options) {
@@ -158,7 +157,7 @@
 
 	HoverEffect.prototype.fade = function(divs) {
 		divs.wrapper.hover(function() {
-			divs.hover.stop().fadeIn(settings.duration, settings.onshow());
+			divs.hover.stop().fadeIn(settings.duration);
 			}, function() {	
 				divs.hover.stop().fadeOut(settings.duration)
 			}
@@ -180,7 +179,7 @@
 		var _this = this;
 
 		divs.wrapper.hover(function() {
-			divs.hover.stop().css({'z-index':settings.zindex+1}).animate(nodes.base, settings.duration, settings.onshow());
+			divs.hover.stop().css({'z-index':settings.zindex+1}).animate(nodes.base, settings.duration);
 			}, function() {	
 				divs.hover.stop().animate(nodes.end, settings.duration,
 					function() {
