@@ -28,10 +28,14 @@ Here is a basic implementation. Include the shown HTML and scripts.  Call the fu
 <script>
 	$(function() {
        	$(".content").hovereffect({
-          background_color: "#777",
-          duration: 500,
-          opacity: 0.7,
-          path: ['left', 'bottomRight']
+        	background_color: "#777",
+          	duration: 500,
+          	opacity: 0.7,
+          	slidePath: ['left', 'bottomRight'],
+          	contentWidth: "0px",
+			contentHeight: "0px",
+			overlayWidth: "0px",
+			overlayHeight: "0px",
         });
     });
 </script>
