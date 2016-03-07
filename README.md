@@ -19,7 +19,7 @@ The jQuery-Hover-Effects Plugin reveals hidden content on an element while hover
 Here is a basic implementation. Include the shown HTML and scripts.  Call the function as shown.
 
 ```html
-<img class="content" src="img/web_page.png" alt="web page">
+<img class="element" src="img/web_page.png" alt="web page">
 <div class="overlay" style="display: none">Content For Overlay Goes Here!</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -27,16 +27,17 @@ Here is a basic implementation. Include the shown HTML and scripts.  Call the fu
 
 <script>
 	$(function() {
-       	$(".content").hovereffect({
-        	background_color: "#777",
-          	duration: 500,
-          	opacity: 0.7,
-          	slidePath: ['left', 'bottomRight'],
-          	contentWidth: "0px",
-			contentHeight: "0px",
-			overlayWidth: "0px",
-			overlayHeight: "0px",
-        });
+      $(".element").hovereffect({
+        background_color: "#555",
+        font_color: "#fff",
+        duration: 500,
+        opacity: 0.7,
+        slidePath: ['left', 'bottomRight'],
+        elementWidth: "125px",
+        elementHeight: "125px",
+        overlayWidth: "100px",
+        overlayHeight: "100px"
+      });
     });
 </script>
 ```

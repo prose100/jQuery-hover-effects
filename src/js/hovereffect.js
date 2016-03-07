@@ -9,10 +9,10 @@
 		wrapper_class: 'wrapper',
 		hover_class: 'hover',
 		base_class: 'base',
-		contentWidth: "0px",
-		contentHeight: "0px",
-		overlayWidth: "0px",
-		overlayHeight: "0px",
+		elementWidth: '',
+        elementHeight: '',
+		overlayWidth: '',
+		overlayHeight: '',
 		zindex: 2
 	};
 
@@ -44,19 +44,19 @@
 	};
 
 	HoverEffect.prototype.getDimensions = function() {
-		var contentWidth = parseInt(settings.contentWidth, 10);
-		var contentHeight = parseInt(settings.contentHeight, 10);
+		var elementWidth = parseInt(settings.elementWidth, 10);
+		var elementHeight = parseInt(settings.elementHeight, 10);
 		var overlayWidth = parseInt(settings.overlayWidth, 10);
 		var overlayHeight = parseInt(settings.overlayHeight, 10);
 
-		contentWidth = contentWidth > 0 ? contentWidth : $this.width();
-		contentHeight = contentHeight > 0 ? contentHeight : $this.height();
-		overlayWidth = overlayWidth > 0 ? overlayWidth : contentWidth;
-		overlayHeight = overlayHeight > 0 ? overlayHeight : contentHeight;
+		elementWidth = elementWidth > 0 ? elementWidth : $this.width();
+		elementHeight = elementHeight > 0 ? elementHeight : $this.height();
+		overlayWidth = overlayWidth > 0 ? overlayWidth : elementWidth;
+		overlayHeight = overlayHeight > 0 ? overlayHeight : elementHeight;
 
 		return dimensions = {
-					cWidth : contentWidth,
-					cHeight : contentHeight,
+					cWidth : elementWidth,
+					cHeight : elementHeight,
 					oWidth : overlayWidth,
 					oHeight : overlayHeight
 				}
