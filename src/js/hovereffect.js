@@ -9,10 +9,10 @@
 		wrapper_class: 'wrapper',
 		hover_class: 'hover',
 		base_class: 'base',
-		elementWidth: '',
-        elementHeight: '',
-		overlayWidth: '',
-		overlayHeight: '',
+		elementWidth: '0px',
+        elementHeight: '0px',
+		overlayWidth: '0px',
+		overlayHeight: '0px',
 		zindex: 2
 	};
 
